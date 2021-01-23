@@ -1,4 +1,4 @@
-#!/bin/bash -ue
+#!/bin/sh -ue
 
 get_package(){
     package_url=$1
