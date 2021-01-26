@@ -45,23 +45,19 @@ extracted=$(get_package "https://github.com/facebook/zstd/releases/download/v1.4
 cmake -B${build_zstd_dir} \
       -DCMAKE_INSTALL_PREFIX=${install_zstd_dir} \
       -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_VERBOSE_MAKEFILE=true \
       ${extracted}/build/cmake
-cd ${build_zstd_dir}
-make -j"$(nproc)"
-make install
-cd ../
+make -C${build_zstd_dir} -j"$(nproc)" install
 
 # build ccache
 extracted=$(get_package "https://github.com/ccache/ccache/releases/download/v4.1/ccache-4.1.tar.gz")
 cmake -B${build_dir} \
       -DCMAKE_INSTALL_PREFIX=${install_dir} \
       -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_VERBOSE_MAKEFILE=true \
       -DCMAKE_PREFIX_PATH=${install_zstd_dir} \
       -DZSTD_LIBRARY=${install_zstd_dir}/lib/libzstd.a \
       ${extracted}
-cd ${build_dir}
-make -j"$(nproc)"
-make install
-cd ../
+make -C${build_dir} -j"$(nproc)" install
 
 rm -rf ${build_dir} ${build_zstd_dir} ${install_zstd_dir} zstd-1.4.8* ccache-4.1*
